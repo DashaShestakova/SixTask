@@ -1,0 +1,13 @@
+2020-10-09 15:24:11.671 INFO  epam.idea.task.six.Main:30 - Start Main.
+2020-10-09 15:24:11.743 INFO  epam.idea.task.six.Main:33 - Parsing input file.
+2020-10-09 15:24:11.793 INFO  epam.idea.task.six.Main:37 - Creating of BookDao.
+2020-10-09 15:24:11.797 INFO  epam.idea.task.six.Main:43 - Added one book.
+2020-10-09 15:24:11.875 INFO  epam.idea.task.six.Main:46 - Find books by field.
+2020-10-09 15:24:11.876 INFO  epam.idea.task.six.Main:47 - [Book{name='War and Peace', author='Lev Tolstoy', year=1865, numberOfPages=1225, language='Russian'}]
+2020-10-09 15:24:11.929 INFO  epam.idea.task.six.Main:50 - Sort books by field.
+2020-10-09 15:24:11.930 INFO  epam.idea.task.six.Main:52 - Book{name='Pride and Prejudice', author='Jane Austen', year=1796, numberOfPages=416, language='English'}
+Book{name='The Count of Monte Cristo', author='Alexander Duma', year=1844, numberOfPages=1350, language='French'}
+Book{name='War and Peace', author='Lev Tolstoy', year=1865, numberOfPages=1225, language='Russian'}
+Book{name='The Call of the Wild', author='Jack London', year=1903, numberOfPages=232, language='English'}
+
+2020-10-09 15:24:11.930 INFO  epam.idea.task.six.Main:53 - End of Main.
