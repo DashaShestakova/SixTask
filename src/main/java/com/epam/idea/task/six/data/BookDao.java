@@ -25,9 +25,9 @@ public class BookDao {
 
     public void addBook(Book book) throws DaoException {
 
-        if (books.contains(book)){
+        if (books.contains(book)) {
             throw new DaoException("There is a book of this type in the list.");
-        }else {
+        } else {
             books.add(book);
         }
 
@@ -35,9 +35,9 @@ public class BookDao {
 
     public void addBook(List<Book> books) throws DaoException {
         for (Book book : books) {
-            if (books.contains(book)){
+            if (books.contains(book)) {
                 throw new DaoException("There is a book of this type in the list.");
-            }else {
+            } else {
                 books.add(book);
             }
         }
@@ -45,9 +45,9 @@ public class BookDao {
     }
 
     public void removeBook(Book book) throws DaoException {
-        if (!books.contains(book)){
+        if (!books.contains(book)) {
             throw new DaoException("There is no book of this type in the List.");
-        }else {
+        } else {
             books.remove(book);
         }
     }
@@ -67,7 +67,7 @@ public class BookDao {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (Book book : books){
+        for (Book book : books) {
             builder.append(book.toString());
             builder.append("\n");
         }
@@ -79,11 +79,15 @@ public class BookDao {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BookDao bookDao = (BookDao) o;
-        return Objects.equals(book, bookDao.book);
+        return books.equals(bookDao.books)
+                && book.equals(bookDao.book);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(book);
+        int hashCode = 1;
+        for (Book book : books)
+            hashCode = 31 * hashCode + (book == null ? 0 : book.hashCode());
+        return hashCode;
     }
 }
