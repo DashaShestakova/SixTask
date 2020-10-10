@@ -26,7 +26,7 @@ public class Main {
     }
     private static void runner() throws DataException, DaoException {
         LOGGER.info("Start Main.");
-        FileInput file = new FileInput(FILE_PATH);//TODO names, проверить работу.  пул реквест. добавить ошибки. файл с книгамию тесты
+        FileInput file = new FileInput(FILE_PATH);
         String text = file.readInput();
         LOGGER.info("Parsing input file.");
 
