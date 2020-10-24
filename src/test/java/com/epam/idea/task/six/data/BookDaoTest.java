@@ -1,10 +1,8 @@
 package com.epam.idea.task.six.data;
 
 import com.epam.idea.task.six.exception.DaoException;
-import com.epam.idea.task.six.exception.DataException;
-import com.epam.idea.task.six.input.FileInput;
 import com.epam.idea.task.six.model.Book;
-import com.epam.idea.task.six.specification.factory.Field;
+import com.epam.idea.task.six.factory.Field;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,69 +10,53 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BookDaoTest {
-    public static final String TEST_FILE_PATH = "src/test/resources/inputTest.txt";
 
-    public static final Book EXPECTED_BOOK = new Book("Crime and Punishment", "Fyodor Dostoevsky", 1866, 672, "Russian");
+    public static final Book FIRST_BOOK = new Book("Crime and Punishment", "Fyodor Dostoevsky", 1866, 672, "Russian");
+    public static final Book SECOND_BOOK = new Book("The Count of Monte Cristo", "Alexander Duma", 1844, 1350, "French");
+    public static final Book THIRD_BOOK = new Book("The Call of the Wild", "Jack London", 1903, 232,  "English");
+    public static final Book FOURTH_BOOK = new Book("War and Peace", "Lev Tolstoy", 1865, 1225, "Russian");
     public static final String AUTHOR = "Fyodor Dostoevsky";
-    public static final BookDao EXPECTED_SORTED_BOOKDAO = new BookDao(Arrays.asList(
-            new Book("Crime and Punishment", "Fyodor Dostoevsky", 1866, 672, "Russian"),
-            new Book("The Call of the Wild", "Jack London", 1903, 232,  "English"),
-            new Book("The Count of Monte Cristo", "Alexander Duma", 1844, 1350, "French")));
-    public static final Book BOOK_TO_ADD = new Book("War and Peace", "Lev Tolstoy", 1865, 1225, "Russian");
-    public static final BookDao EXPECTED_BOOKDAO_WITH_ADDED_BOOK = new BookDao(Arrays.asList(
-            new Book("Crime and Punishment", "Fyodor Dostoevsky", 1866, 672, "Russian"),
-            new Book("The Count of Monte Cristo", "Alexander Duma", 1844, 1350, "French"),
-            new Book("The Call of the Wild", "Jack London", 1903, 232,  "English"),
-            new Book("War and Peace", "Lev Tolstoy", 1865, 1225, "Russian")));
-    public static final Book BOOK_TO_REMOVE = new Book("The Call of the Wild", "Jack London", 1903, 232,  "English");
-    public static final BookDao EXPECTED_BOOKDAO_AFTER_BOOK_REMOVE = new BookDao(Arrays.asList(
-            new Book("Crime and Punishment", "Fyodor Dostoevsky", 1866, 672, "Russian"),
-            new Book("The Count of Monte Cristo", "Alexander Duma", 1844, 1350, "French"),
-            new Book("The Call of the Wild", "Jack London", 1903, 232,  "English")));
+    public static final List<Book> BOOK_DAO_LIST = Arrays.asList(FIRST_BOOK, SECOND_BOOK, THIRD_BOOK);
+    public static final List<Book> EXPECTED_SORTED_BOOKDAO = Arrays.asList(SECOND_BOOK, FIRST_BOOK, THIRD_BOOK);
+
     @Test
-    public void testAddShouldAddBook() throws DaoException, DataException {
-        BookDao bookDao = createBookDao();
+    public void testAddShouldAddBook() throws DaoException{
+        BookDao bookDao = new BookDao();
+        int startSize = bookDao.size();
 
-        bookDao.addBook(BOOK_TO_ADD);
+        bookDao.addBook(FIRST_BOOK);
+        int finalSize = bookDao.size();
 
-        Assert.assertEquals(bookDao, EXPECTED_BOOKDAO_WITH_ADDED_BOOK);
+        Assert.assertEquals(startSize + 1, finalSize);
     }
 
     @Test
-    public void testRemoveShouldRemoveBook() throws DaoException, DataException {
-        BookDao bookDao = createBookDao();
+    public void testRemoveShouldRemoveBook() throws DaoException{
+        BookDao bookDao = new BookDao();
+        bookDao.addBook(BOOK_DAO_LIST);
+        int startSize = bookDao.size();
 
-        bookDao.removeBook(BOOK_TO_REMOVE);
+        bookDao.removeBook(FIRST_BOOK);
 
-        Assert.assertEquals(bookDao, EXPECTED_BOOKDAO_AFTER_BOOK_REMOVE);
+        int finalSize = bookDao.size();
+        Assert.assertEquals(startSize, finalSize + 1);
     }
 
     @Test
-    public void testSortByTagShouldSortBooksWhenFieldIsAuthor() throws DataException {
-        BookDao bookDao = createBookDao();
+    public void testSortByTagShouldSortBooksWhenFieldIsAuthor() throws DaoException {
+        BookDao bookDao = new BookDao();
+        bookDao.addBook(BOOK_DAO_LIST);
+        List<Book> sortedBooks = bookDao.sortByTag(Field.YEAR);
 
-        bookDao.sortByTag(Field.AUTHOR);
-
-        Assert.assertEquals(bookDao, EXPECTED_SORTED_BOOKDAO);
+        Assert.assertEquals(sortedBooks, EXPECTED_SORTED_BOOKDAO);
     }
 
     @Test
-    public void testFindByTagShouldFindBookWhenFieldIsAuthor() throws DataException {
-        BookDao bookDao = createBookDao();
+    public void testFindByTagShouldFindBookWhenFieldIsAuthor() throws DaoException {
+        BookDao bookDao = new BookDao();
+        bookDao.addBook(BOOK_DAO_LIST);
+        Book findedBook = bookDao.findByTag(Field.AUTHOR, AUTHOR);
 
-        BookDao findedBookDao = new BookDao(bookDao.findByTag(Field.AUTHOR, AUTHOR));
-
-        BookDao expectedBookDao = new BookDao(EXPECTED_BOOK);
-
-        Assert.assertEquals(findedBookDao, expectedBookDao);
-    }
-
-    private BookDao createBookDao() throws DataException {
-        FileInput file = new FileInput(TEST_FILE_PATH);
-        String text = file.readInput();
-        BookCreator creator = new BookCreator();
-        List<Book> inputBooks = creator.createBookList(text);
-        BookDao bookDao = new BookDao(inputBooks);
-        return bookDao;
+        Assert.assertEquals(findedBook, FIRST_BOOK);
     }
 }

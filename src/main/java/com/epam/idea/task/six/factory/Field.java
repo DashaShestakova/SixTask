@@ -1,4 +1,4 @@
-package com.epam.idea.task.six.specification.factory;
+package com.epam.idea.task.six.factory;
 
 public enum Field {
     TITLE,

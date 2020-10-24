@@ -1,4 +1,4 @@
-package com.epam.idea.task.six.specification.search;
+package com.epam.idea.task.six.factory.search;
 
 import com.epam.idea.task.six.model.Book;
 

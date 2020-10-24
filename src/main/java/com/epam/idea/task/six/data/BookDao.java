@@ -2,53 +2,47 @@ package com.epam.idea.task.six.data;
 
 import com.epam.idea.task.six.exception.DaoException;
 import com.epam.idea.task.six.model.Book;
-import com.epam.idea.task.six.specification.factory.Field;
-import com.epam.idea.task.six.specification.search.SearchSpecification;
-import com.epam.idea.task.six.specification.factory.SearchSpecificationFactory;
-import com.epam.idea.task.six.specification.sort.SortingSpecification;
-import com.epam.idea.task.six.specification.factory.SortingSpecificationFactory;
+import com.epam.idea.task.six.factory.Field;
+import com.epam.idea.task.six.factory.search.SearchSpecification;
+import com.epam.idea.task.six.factory.SearchSpecificationFactory;
+import com.epam.idea.task.six.factory.SortingFactory;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class BookDao {
-    private List<Book> books;
-    private Book book;
+    private List<Book> books = new ArrayList<>();
 
-    public BookDao(List<Book> books) {
+    /*public BookDao(List<Book> books) {
         this.books = books;
-    }
-
-    public BookDao(Book book) {
-        this.book = book;
-    }
+    }*/
 
     public void addBook(Book book) throws DaoException {
-
-        if (books.contains(book)) {
-            throw new DaoException("There is a book of this type in the list.");
-        } else {
+        if (!books.contains(book)) {
             books.add(book);
+        } else {
+            throw new DaoException("There is a book of this type in the list.");
         }
-
     }
 
     public void addBook(List<Book> books) throws DaoException {
         for (Book book : books) {
-            if (books.contains(book)) {
-                throw new DaoException("There is a book of this type in the list.");
-            } else {
+            if (!books.contains(book)) {
                 books.add(book);
+            } else {
+                throw new DaoException("There is a book of this type in the list.");
             }
         }
 
     }
 
     public void removeBook(Book book) throws DaoException {
-        if (!books.contains(book)) {
-            throw new DaoException("There is no book of this type in the List.");
-        } else {
+        if (books.contains(book)) {
             books.remove(book);
+        } else {
+            throw new DaoException("There is no book of this type in the List.");
         }
     }
 
@@ -58,36 +52,14 @@ public class BookDao {
         return specification.find(books, name);
     }
 
-    public void sortByTag(Field field) {
-        SortingSpecificationFactory factory = new SortingSpecificationFactory();
-        SortingSpecification specification = factory.create(field);
-        specification.sort(books);
+    public List<Book> sortByTag(Field field) {
+        SortingFactory sortingFactory = new SortingFactory();
+        Comparator<Book> comparator = sortingFactory.create(field);
+        Collections.sort(books, comparator);
+        return books;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        for (Book book : books) {
-            builder.append(book.toString());
-            builder.append("\n");
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BookDao bookDao = (BookDao) o;
-        return books.equals(bookDao.books)
-                && book.equals(bookDao.book);
-    }
-
-    @Override
-    public int hashCode() {
-        int hashCode = 1;
-        for (Book book : books)
-            hashCode = 31 * hashCode + (book == null ? 0 : book.hashCode());
-        return hashCode;
+    public int size() {
+        return books.size();
     }
 }

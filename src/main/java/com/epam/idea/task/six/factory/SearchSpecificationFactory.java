@@ -1,6 +1,6 @@
-package com.epam.idea.task.six.specification.factory;
+package com.epam.idea.task.six.factory;
 
-import com.epam.idea.task.six.specification.search.*;
+import com.epam.idea.task.six.factory.search.*;
 
 public class SearchSpecificationFactory {
 

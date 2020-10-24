@@ -9,21 +9,16 @@ import java.io.*;
 public class FileInput {
     private final static Logger LOGGER = Logger.getLogger(FileInput.class);
 
-    private final String fileName;
-
-    public FileInput(String fileName) {
-        this.fileName = fileName;
-    }
+    public static final String FILE_PATH = "src/main/resources/input.txt";
 
     public String readInput() throws DataException {
-        FileReader reader = null;
+        BufferedReader reader = null;
         StringBuilder data = new StringBuilder();
-        char[] symbol = new char[1];
-
         try {
-            reader = new FileReader(fileName);
-            while (reader.read(symbol) != (-1)) {
-                data.append(symbol);
+            reader = new BufferedReader(new FileReader(FILE_PATH));
+            String sCurrentLine;
+            while ((sCurrentLine = reader.readLine()) != null) {
+                data.append(sCurrentLine);
             }
         } catch (IOException e) {
             throw new DataException(e.getMessage());

@@ -1,9 +1,12 @@
-package com.epam.idea.task.six.specification.factory;
+package com.epam.idea.task.six.factory;
 
-import com.epam.idea.task.six.specification.sort.*;
+import com.epam.idea.task.six.model.Book;
+import com.epam.idea.task.six.factory.sort.*;
 
-public class SortingSpecificationFactory {
-    public SortingSpecification create(Field field) {
+import java.util.Comparator;
+
+public class SortingFactory {
+    public Comparator<Book> create(Field field) {
 
         switch (field) {
             case TITLE:
